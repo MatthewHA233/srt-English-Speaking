@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="http://css.h5course.cn/reset.css" />
+    <title>本地音频与SRT字幕同步播放器</title>
+
+    <style>
+        body {
+            background-image: url('背景.png');
+            background-repeat: no-repeat;
+            width: 100%;
+            background-position: left top;
+            background-attachment: fixed;
+            background-size: cover;
+
+            font-family: Arial, sans-serif;
+            margin: 0px;
+            background-color: #000000da;
+            /* 页面背景设置为黑色 */
+            color: #ffffff;
+            /* 文字颜色设置为白色 */
+            padding-bottom: 2500px;
+            z-index: -22;
+            /* 假设悬浮窗高度约为200px，这里添加250px的底部填充 */
+        }
+
+
+
+        label,
+        button {
+            font-size: 15px;
+            display: inline-block;
+            margin: 10px 0;
+            background-color: #ffc5c500;
+            font-family: "优设标题黑";
+            color: #2ef1a3;
+            padding: 6px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover,
+        label:hover {
+            background-color: #0057b300;
+        }
+
+        input[type="file"] {
+            margin-top: 15px;
+        }
+
+        #textContent {
+            margin-top: 140px; /* 根据悬浮窗的大小调整上边距 */
+        }
+
+        
+        #textContent p {
+            position: relative;
+            margin: 10px 0;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0);
+            /* 半透明背景 */
+            color: #ffffff;
+            font-family: "优设标题黑";
+            /* 白色文字，确保在深色背景上的可读性 */
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(10, 10, 10, 0);
+            /* 轻微的阴影，增加立体感 */
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            z-index: 1;
+        }
+
+        #textContent p::before {
+            content: "";
+            /* 添加伪元素内容 */
+            position: absolute;
+            /* 设置伪元素为绝对定位 */
+            top: 0;
+            /* 将伪元素定位在 p 元素的顶部 */
+            left: 0;
+            /* 将伪元素定位在 p 元素的左侧 */
+            width: 100%;
+            /* 设置伪元素宽度为 p 元素的宽度 */
+            height: 100%;
+            /* 设置伪元素高度为 p 元素的高度 */
+            background-color: rgba(0, 0, 0, 0.639);
+            /* 半透明灰色背景 */
+            z-index: -1;
+            /* 将蒙版置于 p 元素下方 */
+        }
+
+        #textContent p:hover {
+            background-color: rgba(255, 255, 255, 0.3); /* 鼠标悬停时背景更为明显 */
+            color: rgb(154, 212, 225); /* 鼠标悬停时改变文字颜色 */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* 添加阴影 */
+        }
+
+
+        /* 快捷键说明样式调整 */
+        #topControls {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            position: relative;
+            /* 新增这行代码 */
+            height: auto;
+            /* 根据内容自动调整高度 */
+        }
+
+        .file-inputs {
+            flex-grow: 1;
+        }
+
+        #shortcutInfo {
+            position: absolute;
+            /* 使用绝对定位 */
+            right: 0;
+            /* 靠右对齐 */
+            top: 0;
+            /* 顶部对齐，可以根据需要调整 */
+            max-width: 40%;
+            /* 限制最大宽度，根据实际内容调整 */
+            text-align: right;
+            /* 文本靠右 */
+            margin-top: -30px;
+            /* 根据需要微调位置 */
+        }
+
+
+        .highlight {
+            background-color: yellow;
+            color: black;
+        }
+
+
+        #shortcutInfo h2 {
+            margin-top: 0;
+        }
+
+        .shortcut-item {
+            display: flex;
+            justify-content: flex-start;
+            /* 从左侧开始排列，更紧凑 */
+            align-items: center;
+            gap: 24px;
+            /* 可选：为子元素之间提供统一的间距 */
+        }
+
+        .shortcut-item span:not(:last-child) {
+            margin-right: 10px;
+            /* 为非最后一个子元素添加右侧间距 */
+        }
+
+        .shortcut-item:last-child {
+            margin-left: auto;
+            /* 将最后一个元素（如空格键说明）推向右侧 */
+            margin-right: auto;
+            /* 并保持其居中 */
+        }
+
+        .file-name {
+            display: inline-block;
+            max-width: 180px; /* 设置最大宽度 */
+            white-space: nowrap; /* 防止文字换行 */
+            overflow: hidden; /* 隐藏溢出的文本 */
+            text-overflow: ellipsis; /* 用省略号表示被截断的文本 */
+            font-size: 14px; /* 设置初始字体大小 */
+            transition: font-size 0.3s; /* 平滑字体大小变化 */
+        }
+
+
+        label {
+            background-color: #007bff00;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        input[type="file"] {
+            display: none;
+            /* 隐藏实际的文件选择输入，使用标签作为按钮 */
+        }
+
+        label:hover {
+            background-color: #08080800;
+        }
+
+        #floatingControlPanel {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            background-color: rgba(0, 105, 180, 0.2);
+            /* 类似蓝色梦幻宝石的颜色 */
+            backdrop-filter: blur(10px);
+            /* 增强毛玻璃效果 */
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+            /* 添加阴影 */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            /* 添加轻微的亮边框增加立体感 */
+            z-index: 100;
+        }
+
+
+        #controls button,
+        #loopToggle,
+        #toggleLoopWhole {
+            margin: 5px;
+            background-color: rgba(255, 255, 255, 0);
+            /* 按钮背景为半透明白色 */
+            color: #fff;
+            /* 文字颜色为白色 */
+            border: 0px solid rgba(255, 255, 255, 0.5);
+            /* 边框为半透明白色 */
+            border-radius: 5px;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        #controls button:hover,
+        #loopToggle:hover,
+        #toggleLoopWhole:hover {
+            background-color: rgba(255, 255, 255, 0.35);
+            /* 鼠标悬停时按钮背景色变化 */
+            transform: translateY(-2px);
+            /* 鼠标悬停时轻微上移，增加交互感 */
+        }
+
+        #shortcutInfo h2 {
+            color: #007bff;
+            margin-bottom: 15px;
+        }
+
+        #shortcutInfo kbd {
+            background-color: #ffffff;
+            border: 1px solid #ffffff;
+            border-radius: 3px;
+            box-shadow: 0 1px 0px rgba(0, 0, 0, 0.2), 0 1px 1px rgba(0, 0, 0, 0.2) inset;
+            padding: 2px 4px;
+            font-size: 90%;
+            color: #333;
+        }
+    </style>
+
+    <style type="text/css">
+        html,
+
+
+
+        .h {
+            padding: 0px 0;
+            color: #e0f3fae7;
+            font-size: 15px;
+
+            font-family: "优设标题黑";
+
+        }
+
+
+
+
+        ul.breadcrumb li:last-child:hover a .h {
+
+            color: #69eacebb;
+            padding: 14px 0;
+            font-size: 22.5px;
+
+        }
+
+        .title {
+            padding: -1px 0;
+            color: #ffffffbc;
+            font-size: 10px;
+            font-family: "优设标题黑";
+        }
+
+        ul.breadcrumb {
+            position: fixed;
+            top: 0; /* 设置顶部对齐 */
+            left: 0; /* 设置左侧对齐 */
+            display: inline-block;
+            margin-left: 35px;
+            margin-top: -349px;
+            z-index: 2;
+            height: 50px;
+        }
+
+        /*实现每个导航项的基本样式*/
+        ul.breadcrumb li {
+
+            float: right;
+            padding: 5px;
+            margin: 3px 0 0 -50px;
+            border-radius: 50px;
+            transition: all 0.2s linear 0s;
+            backdrop-filter: blur(4px);
+
+            background-color: #000000c4;
+        }
+
+        ul.breadcrumb li a {
+
+            display: block;
+            overflow: hidden;
+            min-width: 50px;
+            width: 210px;
+            height: 50px;
+            padding: 0 33.33px 0 52px;
+            color: #fefefead;
+            font-family: "优设标题黑";
+            background-color: #52525226;
+            text-align: center;
+            line-height: 50px;
+            border-radius: 50px;
+            transition: all 0.2s linear 0s;
+            box-sizing: border-box;
+        }
+
+        /*控制每个导航项中文本的出现*/
+        ul.breadcrumb li a .text {
+            display: none;
+            opacity: 0;
+        }
+
+        ul.breadcrumb li a:hover {
+            width: 220px;
+            background-color: #00000094;
+        }
+
+        ul.breadcrumb li a:hover .text {
+            display: inline-block;
+            opacity: 1;
+        }
+
+        /*处理第一个导航项*/
+        ul.breadcrumb li:last-child a {
+            padding: 0;
+
+        }
+
+        ul.breadcrumb li:last-child:hover {
+            padding: 3px;
+            margin-top: 0;
+        }
+
+        ul.breadcrumb li:last-child:hover a {
+            width: 250px;
+            height: 200px;
+            line-height: 20px;
+
+        }
+
+        .kbd {
+
+            font-size: 10px;
+            color: rgb(255, 255, 255);
+            font-family: "优设标题黑";
+        }
+
+        @keyframes scaleAnimation {
+            0% {
+                transform: scale(1);
+            }
+
+            100% {
+                transform: scale(1.5);
+            }
+        }
+
+        ul.breadcrumb li:first-child a {
+            width: 225px;
+
+        }
+
+        ul.breadcrumb li:first-child a:hover {
+            width: 230px;
+            height: 150px;
+
+        }
+
+        .sct {
+            padding: 0px 0;
+            color: #e0f3fae7;
+            font-size: 15px;
+            font-family: "优设标题黑";
+            display: block;
+        }
+
+        /* 按钮样式 */
+        #changeLiStyleButton {
+            display: flex; /* 将按钮设置为flex布局 */
+            justify-content: center; /* 水平居中 */
+            align-items: center; /* 垂直居中 */
+            font-family: "优设标题黑";
+            position: relative;
+            background-color: rgb(189, 18, 18);
+            color: white;
+            padding: 1px 2px;
+            border: none;
+            border-radius: 19px;
+            transform: translate(-28px, 150px);
+            z-index: 3;
+            width: 70px;
+            height: 22px;
+        }
+        
+        #controls button {
+            font-size: 15px; /* 减小字体大小 */
+            padding: 5px 8px; /* 减小内边距 */
+            margin: 2px; /* 减小外边距以挤在一起 */
+        }
+
+
+        .point {
+            position: absolute; /* 绝对定位 */
+            top: 50%; /* 垂直居中 */
+            left: 10%; /* 水平居中 */
+            transform: translate(-50%, -50%); /* 偏移以确保准确居中 */
+            border-radius: 50%;
+            background-color: black;
+            background-color: rgb(0, 0, 0);
+            border-radius: 19px;
+            width: 10px;
+            height: 10px;
+            z-index: 4;
+        }
+
+        #loopInfo {
+            position: absolute; /* 绝对定位 */
+            top: 50%; /* 垂直居中 */
+            left: 50%; /* 水平居中 */
+            transform: translate(-50%, -50%); /* 偏移以确保准确居中 */
+            color: white; /* 文字颜色 */
+            font-size: 12px; /* 文字大小 */
+        }
+
+        #speedInfo {
+            position: absolute; /* 绝对定位 */
+            top: 165%; /* 放在图片下面 */
+            left: 3%; /* 水平放置在图片中间 */
+            z-index: 2; /* 元素堆叠顺序层级置顶 */
+            transform: translate(0, -50%); /* 偏移以确保垂直居中 */
+            color: white; /* 文字颜色 */
+            font-size: 12px; /* 文字大小 */
+            margin-left: 10px; /* 在文字和图片之间添加一些间距 */
+        }
+    </style>
+    <script>
+        var element = document.getElementById('element');
+        element.addEventListener('mouseover', function () {
+            element.remove();
+        });
+    </script>
+    <style>
+        p {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            text-decoration: none;
+        }
+
+        audio {
+            display: none;
+        }
+
+        .wrapper {
+            width: 600px;
+            /* background: #ccc; */
+            margin: 200px 200px auto auto;
+        }
+
+        .main {
+            position: relative; /* 设置相对定位，以便内部元素可以绝对定位 */
+            width: 100%;
+            /* margin: 0 auto; */
+            text-align: center;
+        }
+
+        .main img {
+            position: relative;
+            left: -260px;
+            /* 向右移动 20px */
+            top: +118px;
+            /* 向上移动 10px */
+            width: 100px;
+            border: 25px solid black;
+            border-radius: 50%;
+            transition: transform 0.5s ease;
+            z-index: 1;
+            /* 设置层级为 1 */
+
+        }
+
+    </style>
+
+
+    <div id="topControls">
+
+
+        <audio id="audioPlayer" controls></audio>
+
+
+
+
+        <ul class="breadcrumb">
+
+            <div class="wrapper">
+                <button id="changeLiStyleButton">
+                    <div class="point"></div>
+                    <span id="loopInfo"></span> <!-- 新增：用于显示循环信息 -->
+                </button>
+
+                <main class="main">
+                    <img src=".\封面图.png" alt="" id="imageElement">
+                    <span id="speedInfo"></span> <!-- 新增：用于显示倍速信息 -->
+                </main>
+
+
+            </div>
+
+
+
+            <div id="fileInputs" class="file-inputs">
+                <li>
+                    <a href="#">
+                        <audio id="audioPlayer" controls></audio>
+                        <div id="controls">
+
+                            <button class="speedControl" id="speedButton">Speed: 1.0x</button>
+                            <button id="loopToggle">句子循环：关闭</button>
+                            <button id="toggleLoopWhole">全文循环：开启</button>
+
+                        </div>
+
+
+                    </a>
+
+                </li>
+
+
+                <li>
+                    <a href="#">
+
+
+                        <span class="text icon-folder-open"> <button id="audioInputLabel"
+                                onclick="document.getElementById('audioInput').click()">选择音频文件</button></span>
+
+                        <input type="file" id="audioInput" accept="audio/*" style="display: none;"
+                            onchange="updateFileName(this, 'audioFileName')">
+                        <span id="audioFileName" class="file-name">
+                            选择音频文件
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+
+                        <span class="text icon-folder-open"> <button id="srtInputLabel"
+                                onclick="document.getElementById('srtInput').click()">选择SRT文件</button></span></span>
+
+                        <input type="file" id="srtInput" accept=".srt" style="display: none;"
+                            onchange="updateFileName(this, 'srtFileName')">
+                        <span id="srtFileName" class="file-name">
+                            选择SRT文件
+                    </a>
+                </li>
+                <li>
+
+                    <a href="#">
+                        <h2 class="h">快捷键</h2>
+                        <span class="text icon-code">
+                            <span class="text icon-file">
+                                <span class="title">
+                                    <kbd class="kbd">←/→</kbd>: 上/下句
+                                </span><br>
+                                <span class="title">
+                                    <kbd class="kbd">A&D键</kbd>: 退/进5秒
+                                </span><br>
+                                <span class="title">
+                                    <kbd class="kbd">空格&点击唱片图</kbd>: 播放/暂停
+                                </span><br>
+                                <span class="title">
+                                    <kbd class="kbd">1~6数字键</kbd>: 调整倍速(3为原速)
+                                </span><br>
+                                <span class="title">
+                                    <kbd class="kbd">Q键</kbd>: 单,双,三句循环切换
+                                </span><br>
+                                <span class="title">
+                                    <kbd class="kbd">Ctrl+F</kbd>: 搜索定位
+                                </span><br>
+                                <span class="title">
+                                    <kbd class="kbd">W键</kbd>: 全文循环切换
+                                </span><br>
+
+                            </span></span>
+
+                    </a>
+
+                </li>
+
+            </div>
+
+        </ul>
+
+
+    </div>
+    <script>
+        var audio = document.getElementById("audioPlayer");
+        var image = document.getElementById("imageElement");
+        var currentRotation = 0; // 跟踪当前旋转角度
+        var rotateInterval; // 用于存储旋转间隔的变量
+    
+        image.addEventListener("click", function () {
+            if (audio.paused) {
+                audio.play();
+            } else {
+                audio.pause();
+            }
+        });
+        
+        audio.addEventListener("play", function () {
+            image.classList.add("rotate");
+            rotateInterval = setInterval(function() {
+                currentRotation += 6 * audio.playbackRate; // 每次增加6度，并乘以当前的播放速度
+                image.style.transform = 'rotate(' + currentRotation + 'deg)';
+            }, 100); // 每100毫秒旋转一次
+        });
+    
+        audio.addEventListener("pause", function () {
+            image.classList.remove("rotate");
+            clearInterval(rotateInterval); // 停止旋转间隔
+        });
+    
+        // 监听播放速度改变事件
+        audio.addEventListener("ratechange", function () {
+            // 更新按钮文本
+            speedButton.innerText = "Speed: " + audio.playbackRate.toFixed(2) + "x";
+            // 更新倍速信息的显示，当倍速为1x时不显示
+            document.getElementById('speedInfo').textContent = audio.playbackRate === 1.00 ? "" : audio.playbackRate.toFixed(2) + "x";
+        });
+    </script>
+    
+</head>
+<script>
+    var isHidden = false;
+
+    document.getElementById('changeLiStyleButton').addEventListener('click', function () {
+        var liElements = document.querySelectorAll('.breadcrumb li ');
+        var liElementss = document.querySelector('.breadcrumb li:first-child a');
+
+        if (!isHidden) {
+            liElements.forEach(function (li, index) {
+
+                li.style.transition = 'transform 0.5s ease';
+                li.style.margin = 'margin 0.5s ease';
+                li.style.margin = '3px 0 0 -500px';
+                li.style.transform = 'scale(0.6, 0.6) translate(-1000px, 0)';
+                setTimeout(function () {
+                    li.style.display = 'none';
+                }, 300); // 延迟时间逐渐增加，避免同时隐藏造成卡顿
+            });
+
+
+            isHidden = true;
+        } else {
+            liElements.forEach(function (li) {
+                li.style.margin = '3px 0 0 -50px';
+                li.style.display = 'block';
+                li.style.transform = 'scale(1)';
+                li.style.margin = 'margin 0.5s ease';
+                li.style.transition = 'transform 0.5s ease';
+
+            });
+
+            isHidden = false;
+        }
+    });
+
+</script>
+<script>
+    var audio = document.getElementById("audioPlayer");
+    var speedButton = document.getElementById("speedButton");
+    var speeds = [0.50, 0.75, 1.00, 1.25, 1.50, 2.00]; // 定义速度数组
+    var currentSpeedIndex = 2; // 默认速度索引，对应1.00x
+
+    // 初始化按钮文本
+    speedButton.innerText = "Speed: " + audio.playbackRate.toFixed(2) + "x";
+
+    // 点击按钮时改变播放速度
+    speedButton.addEventListener("click", function () {
+        if (audio.playbackRate <= 1.75) {
+            audio.playbackRate += 0.25;
+        } else {
+            audio.playbackRate = 0.5;
+        }
+        // 更新按钮文本
+        speedButton.innerText = "Speed: " + audio.playbackRate.toFixed(2) + "x";
+    });
+
+    // 监听播放速度改变事件
+    audio.addEventListener("ratechange", function () {
+        // 更新按钮文本
+        speedButton.innerText = "Speed: " + audio.playbackRate.toFixed(2) + "x";
+        // 更新倍速信息的显示，当倍速为1x时不显示
+        document.getElementById('speedInfo').textContent = audio.playbackRate === 1.00 ? "" : audio.playbackRate.toFixed(2) + "x";
+    });
+</script>
+<style>
+    .breadcrumb {
+        position: absolute;
+        cursor: grab;
+        transition: transform 0.3s, opacity 0.3s;
+        /* 平滑过渡 */
+    }
+
+    .dragging {
+        opacity: 0.8;
+        /* 虚化 */
+        transform: scale(1.1);
+        /* 放大 */
+    }
+</style>
+
+<script>
+    var breadcrumb = document.querySelector('.breadcrumb');
+    var isDragging = false;
+    var startX, startY, initialX, initialY;
+
+    breadcrumb.addEventListener('mousedown', function (e) {
+        isDragging = true;
+        startX = e.clientX;
+        startY = e.clientY;
+        // 获取元素当前的transform值
+        var transform = window.getComputedStyle(breadcrumb).transform;
+        if (transform !== 'none') {
+            var matrix = new DOMMatrix(transform);
+            initialX = matrix.m41;
+            initialY = matrix.m42;
+        } else {
+            initialX = 0;
+            initialY = 0;
+        }
+        breadcrumb.classList.add('dragging');
+        e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', function (e) {
+        if (isDragging) {
+            var newX = initialX + (e.clientX - startX);
+            var newY = initialY + (e.clientY - startY);
+
+            // 直接更新元素的transform属性
+            breadcrumb.style.transform = `translate(${newX}px, ${newY}px)`;
+        }
+    });
+
+
+    document.addEventListener('mouseup', function () {
+        if (isDragging) {
+            isDragging = false;
+            breadcrumb.classList.remove('dragging');
+        }
+    });
+
+
+    document.addEventListener('mouseup', function () {
+        if (isDragging) {
+            isDragging = false;
+            breadcrumb.classList.remove('dragging');
+        }
+    });
+</script>
+
+
+
+<body>
+
+
+    <!-- 悬浮控制面板 -->
+
+    <div id="textContent" style="cursor: pointer; ">
+    </div>
+
+    <script>
+        // JavaScript 代码
+        let isLooping = false; // 单句循环的初始状态为关闭
+        let isLoopingWhole = true; // 全文循环的初始状态为开启
+        let loopStart = 0;
+        let loopEnd = 0;
+        let currentParagraphIndex = 0; // 当前选中的段落索引
+        const paragraphs = []; // 存储段落元素的数组
+        const originalTime = 3847.36; // 1:04:07.36 in seconds
+        const offsetTime = 3853; // 1:04:13.00 in seconds
+        const offset = offsetTime - originalTime; // Calculate the offset
+        const correctionFactor = originalTime / offsetTime; // Calculate the correction factor
+
+
+
+        document.getElementById('audioInput').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const audioPlayer = document.getElementById('audioPlayer');
+            audioPlayer.src = URL.createObjectURL(file);
+        });
+
+        document.getElementById('srtInput').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const content = e.target.result;
+                const textContent = document.getElementById('textContent');
+                textContent.innerHTML = ''; // 清空现有内容
+                paragraphs.length = 0; // 清空段落数组
+
+                const srtParts = content.split(/\r?\n\r?\n/);
+                srtParts.forEach((part, index) => {
+                    const lines = part.split(/\r?\n/);
+                    if (lines.length >= 3) {
+                        const timeCodes = lines[1].split(' --> ');
+                        const startTime = timeCodes[0];
+                        const endTime = timeCodes[1];
+                        const textLine = lines.slice(2).join('<br>');
+                        const paragraph = document.createElement('p');
+                        paragraph.innerHTML = textLine;
+                        paragraph.style.margin = '5px 0';
+
+                        paragraph.addEventListener('click', () => {
+                            jumpToParagraph(index);
+                        });
+
+                        textContent.appendChild(paragraph);
+                        paragraphs.push({ element: paragraph, start: startTime, end: endTime });
+                    }
+                });
+            };
+            reader.readAsText(file);
+        });
+
+        function updateFileName(inputElement, fileNameElementId) {
+            var fileName = inputElement.files[0].name;
+            var fileNameElement = document.getElementById(fileNameElementId);
+            fileNameElement.textContent = fileName;
+
+            // 检查文件名长度并相应调整字体大小
+            if (fileName.length > 20) {
+                fileNameElement.style.fontSize = '10px'; // 长文件名时减小字体大小
+            } else {
+                fileNameElement.style.fontSize = '12px'; // 短文件名时使用正常字体大小
+            }
+            // 如果是选择了 SRT 文件，则更新网页标题
+            if (fileNameElementId === 'srtFileName') {
+                document.title = fileName; // 更新网页标题为 SRT 文件名
+            }
+        }
+
+
+        function jumpToParagraph(index) {
+            if (index < 0 || index >= paragraphs.length) return;
+
+            currentParagraphIndex = index;
+
+            // 根据当前的循环模式更新循环的起始和结束时间
+            if (loopMode === 0) {
+                // 单句循环
+                const paragraph = paragraphs[index];
+                loopStart = convertTimeCodeToSeconds(paragraph.start);
+                loopEnd = convertTimeCodeToSeconds(paragraph.end);
+            } else {
+                // 双句或三句循环
+                updateLoopTimes();
+            }
+
+            const audioPlayer = document.getElementById('audioPlayer');
+            audioPlayer.currentTime = loopStart;
+            audioPlayer.play();
+        }
+
+
+
+        // 在页面加载时设置全文循环的初始状态
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('toggleLoopWhole').textContent = "全文循环：开启";
+            // 如果有需要，这里可以添加代码来激活全文循环的功能
+        });
+
+
+
+        document.getElementById('toggleLoopWhole').addEventListener('click', function () {
+            isLoopingWhole = !isLoopingWhole;
+            this.textContent = isLoopingWhole ? "全文循环：开启" : "全文循环：关闭";
+            // 根据isLoopingWhole的状态更新全文循环的行为
+        });
+
+        let lastLoopTime = 0; // 用于记录上一次循环跳转的时间，避免过于频繁的重置
+
+        // 在<script>标签内部，更新以下部分：
+
+        let allowLoopReset = true; // 新增变量，用于控制是否允许执行循环重置
+
+        document.getElementById('audioPlayer').addEventListener('timeupdate', function () {
+            const player = this;
+            const currentTime = player.currentTime;
+            if (isLooping && currentTime >= loopEnd && allowLoopReset) {
+                // 当满足循环条件时，重置音频播放位置
+                player.currentTime = loopStart;
+                player.play();
+
+                allowLoopReset = false; // 临时禁止循环重置
+                setTimeout(() => { allowLoopReset = true; }, 100); // 100毫秒后重新允许循环重置，避免抽搐
+            }
+        });
+
+        // 循环模式的状态：0=关闭，1=单句，2=双句，3=三句
+        let loopMode = 0;
+
+
+        document.getElementById('loopToggle').addEventListener('click', function () {
+            // 更新循环模式并循环其状态
+            loopMode = (loopMode + 1) % 4; // 循环模式: 0->关闭, 1->单句, 2->双句, 3->三句
+
+            // 更新按钮文本
+            updateLoopModeDisplay();
+            // 基于新的循环模式更新循环的起始和结束时间
+            updateLoopTimes();
+        });
+
+
+        function updateLoopModeDisplay() {
+            let loopText = ""; // 初始化循环文本为空
+            switch (loopMode) {
+                case 0:
+                    document.getElementById('loopToggle').textContent = "句子循环：关闭";
+                    break;
+                case 1:
+                    document.getElementById('loopToggle').textContent = "单句循环：开启";
+                    loopText = "单句∞"; // 设置单句循环文本
+                    break;
+                case 2:
+                    document.getElementById('loopToggle').textContent = "双句循环：开启";
+                    loopText = "双句∞"; // 设置双句循环文本
+                    break;
+                case 3:
+                    document.getElementById('loopToggle').textContent = "三句循环：开启";
+                    loopText = "三句∞"; // 设置三句循环文本
+                    break;
+            }
+            // 更新循环信息的显示
+            document.getElementById('loopInfo').textContent = loopText;
+        }
+
+
+        function updateLoopTimes() {
+            // 当循环关闭时，不需要更新时间
+            if (loopMode === 0) {
+                return;
+            }
+
+            // 定义起始索引和结束索引
+            let startIndex = currentParagraphIndex;
+            let endIndex = currentParagraphIndex + (loopMode - 1); // 对于双句和三句循环，向后延伸1或2句
+            endIndex = Math.min(endIndex, paragraphs.length - 1); // 确保不超出范围
+
+            loopStart = convertTimeCodeToSeconds(paragraphs[startIndex].start);
+            loopEnd = convertTimeCodeToSeconds(paragraphs[endIndex].end);
+        }
+
+
+
+        document.getElementById('textContent').addEventListener('click', function (e) {
+            // 假设每个段落（p标签）被点击时都会触发跳转
+            // 您可能需要根据实际的HTML结构调整这部分逻辑
+            const target = e.target;
+            if (target.tagName === 'P') {
+                const index = paragraphs.findIndex(p => p.element === target);
+                if (index !== -1) {
+                    jumpToParagraph(index);
+                }
+            }
+        });
+
+        document.getElementById('audioPlayer').addEventListener('timeupdate', function () {
+            const player = this;
+            // 当循环模式开启且当前时间超过循环结束时间时，重置到循环开始
+            if (loopMode > 0 && player.currentTime >= loopEnd) {
+                player.currentTime = loopStart;
+                player.play();
+            }
+        });
+
+
+        document.getElementById('audioPlayer').addEventListener('ended', function () {
+            // 检查是否启用了全文循环
+            if (isLoopingWhole) {
+                // 如果启用了全文循环，跳转到第一段
+                jumpToParagraph(0);
+            }
+        });
+
+        document.addEventListener('keydown', function (e) {
+            const audioPlayer = document.getElementById('audioPlayer');
+            switch (e.code) {
+                case 'Space':
+                    e.preventDefault(); // 防止按下空格键时页面滚动
+                    if (audioPlayer.paused) {
+                        audioPlayer.play();
+                    } else {
+                        audioPlayer.pause();
+                    }
+                    break;
+                case 'ArrowLeft':
+                    jumpToParagraph(currentParagraphIndex - 1);
+                    break;
+                case 'ArrowRight':
+                    jumpToParagraph(currentParagraphIndex + 1);
+                    break;
+                case 'KeyQ':
+                    // 循环通过循环模式
+                    loopMode = (loopMode + 1) % 4; // 从 0 到 3 循环
+                    updateLoopModeDisplay(); // 根据当前模式更新按钮文本
+                    updateLoopTimes(); // 根据新模式更新循环时间
+                    break;
+                case 'KeyA': // 后退5秒
+                    audioPlayer.currentTime = Math.max(0, audioPlayer.currentTime - 5);
+                    break;
+                case 'KeyD': // 前进5秒
+                    audioPlayer.currentTime = Math.min(audioPlayer.duration, audioPlayer.currentTime + 5);
+                    break;
+                case 'KeyW': // 切换全文循环模式
+                    isLoopingWhole = !isLoopingWhole;
+                    document.getElementById('toggleLoopWhole').textContent = `全文循环：${isLoopingWhole ? "开启" : "关闭"}`;
+                    break;
+                case 'Digit1':
+                    audioPlayer.playbackRate = 0.50;
+                    speedButton.innerText = "Speed: 0.50x";
+                    break;
+                case 'Digit2':
+                    audioPlayer.playbackRate = 0.75;
+                    speedButton.innerText = "Speed: 0.75x";
+                    break;
+                case 'Digit3':
+                    audioPlayer.playbackRate = 1.00;
+                    speedButton.innerText = "Speed: 1.00x";
+                    break;
+                case 'Digit4':
+                    audioPlayer.playbackRate = 1.25;
+                    speedButton.innerText = "Speed: 1.25x";
+                    break;
+                case 'Digit5':
+                    audioPlayer.playbackRate = 1.50;
+                    speedButton.innerText = "Speed: 1.50x";
+                    break;
+                case 'Digit6':
+                    audioPlayer.playbackRate = 2.00;
+                    speedButton.innerText = "Speed: 2.00x";
+                    break;
+            }
+        });
+
+        document.querySelectorAll('.speedControl').forEach(button => {
+            button.addEventListener('click', function () {
+                const speed = parseFloat(this.getAttribute('data-speed'));
+                document.getElementById('audioPlayer').playbackRate = speed;
+            });
+        });
+
+        function convertTimeCodeToSeconds(timeCode) {
+            const parts = timeCode.split(':');
+            const hours = parseInt(parts[0], 10);
+            const minutes = parseInt(parts[1], 10);
+            const secondsMilliseconds = parts[2].split(',');
+            const seconds = parseInt(secondsMilliseconds[0], 10);
+            const milliseconds = parseInt(secondsMilliseconds[1], 10);
+            const totalSeconds = (hours * 3600) + (minutes * 60) + seconds + (milliseconds / 1000);
+            return totalSeconds * correctionFactor; // Apply the correction factor
+        }
+
+
+    </script>
+</body>
+
+</html>
