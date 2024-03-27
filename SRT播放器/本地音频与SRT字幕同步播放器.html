@@ -434,9 +434,11 @@
             /* 绝对定位 */
             top: 50%;
             /* 垂直居中 */
-            left: 50%;
+            left: 78%;
             /* 水平居中 */
-            transform: translate(-50%, -50%);
+            z-index: 10;
+            /* 元素堆叠顺序层级置顶 */
+            transform: translate(-50%, -50%)rotate(-90deg);
             /* 偏移以确保准确居中 */
             color: white;
             /* 文字颜色 */
@@ -532,7 +534,7 @@
             padding: 1px 2px;
             border: none;
             border-radius: 19px;
-            z-index: 11110;
+            z-index: 10;
             width: 100px;
             height: 10px;
             transform: rotate(105deg) translate(150px, -100px);
@@ -624,7 +626,7 @@
             /* 使其可以应用变换 */
             transform-origin: center center;
             /* 设置旋转中心为中心点 */
-            z-index: 1220;
+            z-index: 10;
             transition: transform 0.5s ease;
             position: relative;
 
@@ -636,7 +638,7 @@
             /* 仅应用旋转效果 */
             transition: transform 0.5s ease;
             /* 平滑过渡动画 */
-            z-index: 1220;
+            z-index: 10;
             position: relative;
         }
     </style>
@@ -739,7 +741,7 @@
                                     <kbd class="kbd">1~6数字键</kbd>: 调整倍速(3为原速)
                                 </span><br>
                                 <span class="title">
-                                    <kbd class="kbd">Q/W键</kbd>: 句子/全文循环切换
+                                    <kbd class="kbd">Q/E键</kbd>: 句子/全文循环切换
                                 </span><br>
 
                             </span></span>
