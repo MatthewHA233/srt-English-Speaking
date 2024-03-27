@@ -592,7 +592,7 @@
                                     <kbd class="kbd">Ctrl+F</kbd>: 搜索定位
                                 </span><br>
                                 <span class="title">
-                                    <kbd class="kbd">AD/WS键</kbd>: 退进0.2/5秒
+                                    <kbd class="kbd">AD/WS键</kbd>: 退进0.5/5秒
                                 </span><br>
                                 <span class="title">
                                     <kbd class="kbd">空格&点击唱片图</kbd>: 播放/暂停
@@ -1054,11 +1054,11 @@
                     updateLoopModeDisplay(); // 根据当前模式更新按钮文本
                     updateLoopTimes(); // 根据新模式更新循环时间
                     break;
-                case 'KeyA': // 后退0.2秒
-                    audioPlayer.currentTime = Math.max(0, audioPlayer.currentTime - 0.2);
+                case 'KeyA': // 后退0.5秒
+                    audioPlayer.currentTime = Math.max(0, audioPlayer.currentTime - 0.5);
                     break;
-                case 'KeyD': // 前进0.2秒
-                    audioPlayer.currentTime = Math.min(audioPlayer.duration, audioPlayer.currentTime + 0.2);
+                case 'KeyD': // 前进0.5秒
+                    audioPlayer.currentTime = Math.min(audioPlayer.duration, audioPlayer.currentTime + 0.5);
                     break;
                 case 'KeyW': // 后退5秒
                     audioPlayer.currentTime = Math.max(0, audioPlayer.currentTime - 5);
