@@ -35,12 +35,27 @@
             margin: 10px 0;
             background-color: #ffc5c500;
             font-family: "优设标题黑";
-            color: #2ef1a3;
+            color: #ffffff;
             padding: 6px 15px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
+            transition: transform 0.5s ease;
+        }
+        button:hover {
+            font-size: 16px;
+            display: inline-block;
+            margin: 10px 0;
+            background-color: #ffc5c500;
+            font-family: "优设标题黑";
+            color: #32ff8b;
+            padding: 6px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            transition: transform 0.5s ease;
         }
 
         button:hover,
@@ -53,7 +68,7 @@
         }
 
         #textContent {
-            margin-top: 140px;
+            margin-top: 190px;
             /* 根据悬浮窗的大小调整上边距 */
         }
 
@@ -61,7 +76,7 @@
         #textContent p {
             position: relative;
             margin: 10px 0;
-            padding: 10px;
+            padding: 20px;
             background-color: rgba(255, 255, 255, 0);
             /* 半透明背景 */
             color: #ffffff;
@@ -281,6 +296,7 @@
             font-size: 15px;
 
             font-family: "优设标题黑";
+            
 
         }
 
@@ -292,6 +308,8 @@
             color: #69eacebb;
             padding: 14px 0;
             font-size: 22.5px;
+            transform: translate(0%, 0%);
+            transition: transform 0.5s ease;
 
         }
 
@@ -300,19 +318,23 @@
             color: #ffffffbc;
             font-size: 10px;
             font-family: "优设标题黑";
+            
+            
         }
 
         ul.breadcrumb {
+            
             position: fixed;
             top: 0;
             /* 设置顶部对齐 */
             left: 0;
             /* 设置左侧对齐 */
             display: inline-block;
-            margin-left: 35px;
-            margin-top: -349px;
+            margin-left: -65px;
+            margin-top: -319px;
             z-index: 2;
             height: 50px;
+            
         }
 
         /*实现每个导航项的基本样式*/
@@ -336,8 +358,9 @@
             width: 210px;
             height: 50px;
             padding: 0 33.33px 0 52px;
-            color: #fefefead;
+            color: #ffffff;
             font-family: "优设标题黑";
+            font-size: 15px;
             background-color: #52525226;
             text-align: center;
             line-height: 50px;
@@ -371,18 +394,19 @@
         ul.breadcrumb li:last-child:hover {
             padding: 3px;
             margin-top: 0;
+
         }
 
         ul.breadcrumb li:last-child:hover a {
             width: 250px;
-            height: 200px;
+            height: 220px;
             line-height: 20px;
 
         }
 
         .kbd {
 
-            font-size: 10px;
+            font-size: 15px;
             color: rgb(255, 255, 255);
             font-family: "优设标题黑";
         }
@@ -416,6 +440,11 @@
             display: block;
         }
 
+        .breadcrumb li:nth-child(2) a:hover {
+            width: 250px;
+            height: 120px;
+            /* 样式 */
+        }
 
 
         #controls button {
@@ -484,6 +513,7 @@
         }
 
         .wrapper {
+            left: 125px;
             width: 600px;
             margin: 200px 200px auto auto;
             z-index: 9;
@@ -693,29 +723,20 @@
 
                 <li>
                     <a href="#">
-
-
-                        <span class="text icon-folder-open"> <button id="audioInputLabel"
-                                onclick="document.getElementById('audioInput').click()">选择音频文件</button></span>
-
+                        <button id="audioInputLabel" onclick="document.getElementById('audioInput').click()">选择音频文件</button>
                         <input type="file" id="audioInput" accept="audio/*" style="display: none;"
-                            onchange="updateFileName(this, 'audioFileName')">
-                        <span id="audioFileName" class="file-name">
-                            选择音频文件
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-
-                        <span class="text icon-folder-open"> <button id="srtInputLabel"
-                                onclick="document.getElementById('srtInput').click()">选择SRT文件</button></span></span>
-
+                               onchange="updateFileName(this, 'audioFileName'); document.getElementById('audioInputLabel').style.display = 'none';">
+                        <span id="audioFileName" class="file-name"></span>
+                        
+                        <button id="srtInputLabel" onclick="document.getElementById('srtInput').click()">选择SRT文件</button>
                         <input type="file" id="srtInput" accept=".srt" style="display: none;"
-                            onchange="updateFileName(this, 'srtFileName')">
-                        <span id="srtFileName" class="file-name">
-                            选择SRT文件
+                               onchange="updateFileName(this, 'srtFileName'); document.getElementById('srtInputLabel').style.display = 'none';">
+                        <span id="srtFileName" class="file-name"></span>
+                        
+
                     </a>
                 </li>
+
                 <li>
 
                     <a href="#">
@@ -723,25 +744,25 @@
                         <span class="text icon-code">
                             <span class="text icon-file">
                                 <span class="title">
-                                    <kbd class="kbd">←/→</kbd>: 上/下句
+                                    <kbd class="kbd">←O→</kbd>----------------上/下句
                                 </span><br>
                                 <span class="title">
-                                    <kbd class="kbd">Ctrl+F</kbd>: 搜索定位
+                                    <kbd class="kbd">Ctrl+F</kbd>--------------搜索定位
                                 </span><br>
                                 <span class="title">
-                                    <kbd class="kbd">Ctrl+Z</kbd>: 清除文字高亮
+                                    <kbd class="kbd">Ctrl+Z</kbd>--------清除文字高亮
                                 </span><br>
                                 <span class="title">
-                                    <kbd class="kbd">AD/WS键</kbd>: 退进0.5/5秒
+                                    <kbd class="kbd">AD/WS键</kbd>------退进0.5/5秒
                                 </span><br>
                                 <span class="title">
-                                    <kbd class="kbd">空格&点击唱片图</kbd>: 播放/暂停
+                                    <kbd class="kbd">空格&点唱片</kbd>------播放/暂停
                                 </span><br>
                                 <span class="title">
-                                    <kbd class="kbd">1~6数字键</kbd>: 调整倍速(3为原速)
+                                    <kbd class="kbd">1~6数字键</kbd>-调整倍速(3为原速)
                                 </span><br>
                                 <span class="title">
-                                    <kbd class="kbd">Q/E键</kbd>: 句子/全文循环切换
+                                    <kbd class="kbd">Q/E键</kbd>-------句子/全文循环切换
                                 </span><br>
 
                             </span></span>
@@ -1003,7 +1024,7 @@
             if (fileName.length > 20) {
                 fileNameElement.style.fontSize = '10px'; // 长文件名时减小字体大小
             } else {
-                fileNameElement.style.fontSize = '12px'; // 短文件名时使用正常字体大小
+                fileNameElement.style.fontSize = '15px'; // 短文件名时使用正常字体大小
             }
             // 如果是选择了 SRT 文件，则更新网页标题
             if (fileNameElementId === 'srtFileName') {
