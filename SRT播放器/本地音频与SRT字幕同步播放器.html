@@ -43,6 +43,7 @@
             transition: background-color 0.3s;
             transition: transform 0.5s ease;
         }
+
         button:hover {
             font-size: 16px;
             display: inline-block;
@@ -296,7 +297,7 @@
             font-size: 15px;
 
             font-family: "优设标题黑";
-            
+
 
         }
 
@@ -318,12 +319,12 @@
             color: #ffffffbc;
             font-size: 10px;
             font-family: "优设标题黑";
-            
-            
+
+
         }
 
         ul.breadcrumb {
-            
+
             position: fixed;
             top: 0;
             /* 设置顶部对齐 */
@@ -334,7 +335,7 @@
             margin-top: -319px;
             z-index: 2;
             height: 50px;
-            
+
         }
 
         /*实现每个导航项的基本样式*/
@@ -343,7 +344,7 @@
             float: right;
             padding: 5px;
             margin: 3px 0 0 -50px;
-            border-radius: 50px;
+            border-radius: 30px;
             transition: all 0.2s linear 0s;
             backdrop-filter: blur(4px);
 
@@ -364,7 +365,7 @@
             background-color: #52525226;
             text-align: center;
             line-height: 50px;
-            border-radius: 50px;
+            border-radius: 30px;
             transition: all 0.2s linear 0s;
             box-sizing: border-box;
         }
@@ -388,6 +389,7 @@
         /*处理第一个导航项*/
         ul.breadcrumb li:last-child a {
             padding: 0;
+            
 
         }
 
@@ -403,6 +405,12 @@
             line-height: 20px;
 
         }
+        .breadcrumb li:nth-child(2) a:hover {
+            width: 250px;
+            height: 120px;
+            /* 样式 */
+        }
+
 
         .kbd {
 
@@ -440,12 +448,7 @@
             display: block;
         }
 
-        .breadcrumb li:nth-child(2) a:hover {
-            width: 250px;
-            height: 120px;
-            /* 样式 */
-        }
-
+     
 
         #controls button {
             font-size: 15px;
@@ -513,13 +516,19 @@
         }
 
         .wrapper {
-            left: 125px;
+            left: 123px;
             width: 600px;
             margin: 200px 200px auto auto;
             z-index: 9;
-            /* 设置一个较高的 z-index 值 */
             position: relative;
-            /* 必须设置 position 属性，z-index 才会生效 */
+            pointer-events: none;
+            /* 禁止 .wrapper 响应鼠标事件 */
+        }
+
+        #changeLiStyleButton,
+        #imageElement {
+            pointer-events: auto;
+            /* 允许按钮和图片响应鼠标事件 */
         }
 
         .main {
@@ -723,16 +732,18 @@
 
                 <li>
                     <a href="#">
-                        <button id="audioInputLabel" onclick="document.getElementById('audioInput').click()">选择音频文件</button>
+                        <button id="audioInputLabel"
+                            onclick="document.getElementById('audioInput').click()">选择音频文件</button>
                         <input type="file" id="audioInput" accept="audio/*" style="display: none;"
-                               onchange="updateFileName(this, 'audioFileName'); document.getElementById('audioInputLabel').style.display = 'none';">
+                            onchange="updateFileName(this, 'audioFileName'); document.getElementById('audioInputLabel').style.display = 'none';">
                         <span id="audioFileName" class="file-name"></span>
-                        
-                        <button id="srtInputLabel" onclick="document.getElementById('srtInput').click()">选择SRT文件</button>
+
+                        <button id="srtInputLabel"
+                            onclick="document.getElementById('srtInput').click()">选择SRT文件</button>
                         <input type="file" id="srtInput" accept=".srt" style="display: none;"
-                               onchange="updateFileName(this, 'srtFileName'); document.getElementById('srtInputLabel').style.display = 'none';">
+                            onchange="updateFileName(this, 'srtFileName'); document.getElementById('srtInputLabel').style.display = 'none';">
                         <span id="srtFileName" class="file-name"></span>
-                        
+
 
                     </a>
                 </li>
@@ -782,12 +793,25 @@
         var image = document.getElementById("imageElement");
         var currentRotation = 0; // 跟踪当前旋转角度
         var rotateInterval; // 用于存储旋转间隔的变量
+        var clickTimer; // 用于存储点击计时器的变量
 
-        image.addEventListener("click", function () {
-            if (audio.paused) {
-                audio.play();
-            } else {
-                audio.pause();
+        image.addEventListener("mousedown", function () {
+            // 在鼠标按下时开始计时
+            clickTimer = setTimeout(function () {
+                clickTimer = null; // 超过1秒后，将计时器设置为null
+            }, 100);
+        });
+
+        image.addEventListener("mouseup", function () {
+            // 在鼠标释放时检查计时器
+            if (clickTimer) {
+                clearTimeout(clickTimer); // 清除计时器
+                // 执行播放或暂停操作
+                if (audio.paused) {
+                    audio.play();
+                } else {
+                    audio.pause();
+                }
             }
         });
 
@@ -811,17 +835,14 @@
             // 更新倍速信息的显示，当倍速为1x时不显示
             document.getElementById('speedInfo').textContent = audio.playbackRate === 1.00 ? "" : audio.playbackRate.toFixed(2) + "x";
         });
+
         audio.addEventListener("play", function () {
             document.getElementById('buttonWrapper').classList.add("rotate-button");
-            // 其他代码...
         });
 
         audio.addEventListener("pause", function () {
             document.getElementById('buttonWrapper').classList.remove("rotate-button");
-            // 其他代码...
         });
-
-
     </script>
 
 </head>
@@ -842,10 +863,11 @@
             });
             isHidden = true;
         } else {
-            liElements.forEach(function (li, index) {
+            // 反转liElements数组，以便元素以相反的顺序显示
+            Array.from(liElements).reverse().forEach(function (li, index) {
                 li.style.display = 'block';
                 setTimeout(function () {
-                    li.style.transform = 'scale(1) translateX(0)';
+                    li.style.transform = 'scale(1)';
                     li.style.opacity = '1';
                 }, 10 + index * 100); // 逐个元素增加延迟，创建连续动画效果
             });
@@ -896,7 +918,6 @@
         /* 放大 */
     }
 </style>
-
 <script>
     var breadcrumb = document.querySelector('.breadcrumb');
     var isDragging = false;
@@ -906,7 +927,6 @@
         isDragging = true;
         startX = e.clientX;
         startY = e.clientY;
-        // 获取元素当前的transform值
         var transform = window.getComputedStyle(breadcrumb).transform;
         if (transform !== 'none') {
             var matrix = new DOMMatrix(transform);
@@ -922,22 +942,13 @@
 
     document.addEventListener('mousemove', function (e) {
         if (isDragging) {
-            var newX = initialX + (e.clientX - startX);
-            var newY = initialY + (e.clientY - startY);
-
-            // 直接更新元素的transform属性
-            breadcrumb.style.transform = `translate(${newX}px, ${newY}px)`;
+            requestAnimationFrame(function () {
+                var newX = initialX + (e.clientX - startX);
+                var newY = initialY + (e.clientY - startY);
+                breadcrumb.style.transform = `translate(${newX}px, ${newY}px)`;
+            });
         }
     });
-
-
-    document.addEventListener('mouseup', function () {
-        if (isDragging) {
-            isDragging = false;
-            breadcrumb.classList.remove('dragging');
-        }
-    });
-
 
     document.addEventListener('mouseup', function () {
         if (isDragging) {
