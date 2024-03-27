@@ -592,6 +592,9 @@
                                     <kbd class="kbd">Ctrl+F</kbd>: 搜索定位
                                 </span><br>
                                 <span class="title">
+                                    <kbd class="kbd">Ctrl+Z</kbd>: 清除文字高亮
+                                </span><br>
+                                <span class="title">
                                     <kbd class="kbd">AD/WS键</kbd>: 退进0.5/5秒
                                 </span><br>
                                 <span class="title">
@@ -601,10 +604,7 @@
                                     <kbd class="kbd">1~6数字键</kbd>: 调整倍速(3为原速)
                                 </span><br>
                                 <span class="title">
-                                    <kbd class="kbd">Q键</kbd>: 单,双,三句循环切换
-                                </span><br>
-                                <span class="title">
-                                    <kbd class="kbd">W键</kbd>: 全文循环切换
+                                    <kbd class="kbd">Q/W键</kbd>: 句子/全文循环切换
                                 </span><br>
 
                             </span></span>
@@ -1066,9 +1066,17 @@
                 case 'KeyS': // 前进5秒
                     audioPlayer.currentTime = Math.min(audioPlayer.duration, audioPlayer.currentTime + 5);
                     break;
-                case 'KeyW': // 切换全文循环模式
+                case 'KeyE': // 切换全文循环模式
                     isLoopingWhole = !isLoopingWhole;
                     document.getElementById('toggleLoopWhole').textContent = `全文循环：${isLoopingWhole ? "开启" : "关闭"}`;
+                    break;
+                case 'KeyZ': // 清除所有高亮文本
+                    if (e.ctrlKey) { // 确保 Ctrl 键也被按下
+                        document.querySelectorAll('.highlighted-text').forEach(function(element) {
+                            element.parentNode.innerHTML = element.parentNode.textContent;
+                        });
+                        e.preventDefault(); // 防止触发浏览器的默认 Ctrl+Z 行为（撤销）
+                    }
                     break;
                 case 'Digit1':
                     audioPlayer.playbackRate = 0.50;
@@ -1094,6 +1102,7 @@
                     audioPlayer.playbackRate = 2.00;
                     speedButton.innerText = "Speed: 2.00x";
                     break;
+            
             }
         });
 
