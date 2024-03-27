@@ -589,7 +589,10 @@
                                     <kbd class="kbd">←/→</kbd>: 上/下句
                                 </span><br>
                                 <span class="title">
-                                    <kbd class="kbd">A&D键</kbd>: 退/进0.2秒
+                                    <kbd class="kbd">Ctrl+F</kbd>: 搜索定位
+                                </span><br>
+                                <span class="title">
+                                    <kbd class="kbd">AD/WS键</kbd>: 退进0.2/5秒
                                 </span><br>
                                 <span class="title">
                                     <kbd class="kbd">空格&点击唱片图</kbd>: 播放/暂停
@@ -599,9 +602,6 @@
                                 </span><br>
                                 <span class="title">
                                     <kbd class="kbd">Q键</kbd>: 单,双,三句循环切换
-                                </span><br>
-                                <span class="title">
-                                    <kbd class="kbd">Ctrl+F</kbd>: 搜索定位
                                 </span><br>
                                 <span class="title">
                                     <kbd class="kbd">W键</kbd>: 全文循环切换
@@ -1059,6 +1059,12 @@
                     break;
                 case 'KeyD': // 前进0.2秒
                     audioPlayer.currentTime = Math.min(audioPlayer.duration, audioPlayer.currentTime + 0.2);
+                    break;
+                case 'KeyW': // 后退5秒
+                    audioPlayer.currentTime = Math.max(0, audioPlayer.currentTime - 5);
+                    break;
+                case 'KeyS': // 前进5秒
+                    audioPlayer.currentTime = Math.min(audioPlayer.duration, audioPlayer.currentTime + 5);
                     break;
                 case 'KeyW': // 切换全文循环模式
                     isLoopingWhole = !isLoopingWhole;
