@@ -483,8 +483,11 @@
 
         .wrapper {
             width: 600px;
-            /* background: #ccc; */
             margin: 200px 200px auto auto;
+            z-index: 9;
+            /* 设置一个较高的 z-index 值 */
+            position: relative;
+            /* 必须设置 position 属性，z-index 才会生效 */
         }
 
         .main {
@@ -493,6 +496,10 @@
             width: 100%;
             /* margin: 0 auto; */
             text-align: center;
+            position: relative;
+            /* 必须设置 position 属性，z-index 才会生效 */
+            z-index: 1;
+            /* 设置一个较低的 z-index 值 */
         }
 
         .main img {
@@ -509,7 +516,7 @@
             /* 设置层级为 1 */
 
         }
-        
+
         /* 按钮样式 */
         #changeLiStyleButton {
             display: flex;
@@ -525,10 +532,10 @@
             padding: 1px 2px;
             border: none;
             border-radius: 19px;
-            z-index: 3;
+            z-index: 11110;
             width: 100px;
             height: 10px;
-            transform: rotate(105deg) translate(130px, -90px);
+            transform: rotate(105deg) translate(150px, -100px);
         }
 
         .point {
@@ -579,7 +586,7 @@
             /* 偏移以确保准确居中 */
             border-radius: 50%;
 
-            background-color: rgba(0, 0, 0, 0.912);
+            background-color: rgb(0, 0, 0);
             border-radius: 19px;
             width: 15px;
             height: 20px;
@@ -612,13 +619,26 @@
 
         }
 
-        .rotate-button {
-            transform-origin: calc(50% + 55px) calc(50% + 35px);
-            /* 根据 point 的位置调整 */
-            transform: rotate(-80deg);
+        #buttonWrapper {
+            display: inline-block;
+            /* 使其可以应用变换 */
+            transform-origin: center center;
+            /* 设置旋转中心为中心点 */
+            z-index: 1220;
             transition: transform 0.5s ease;
+            position: relative;
+
+
         }
 
+        .rotate-button {
+            transform: rotate(-7deg);
+            /* 仅应用旋转效果 */
+            transition: transform 0.5s ease;
+            /* 平滑过渡动画 */
+            z-index: 1220;
+            position: relative;
+        }
     </style>
 
 
@@ -633,20 +653,19 @@
         <ul class="breadcrumb">
 
             <div class="wrapper">
-                <button id="changeLiStyleButton">
-                    <div class="point4"></div>
-                    <div class="point3"></div>
-                    <div class="point2"></div>
-                    <div class="point"></div>
-                    <span id="loopInfo"></span> <!-- 新增：用于显示循环信息 -->
-                </button>
-
-
+                <div id="buttonWrapper"> <!-- 新增包裹元素 -->
+                    <button id="changeLiStyleButton">
+                        <div class="point4"></div>
+                        <div class="point3"></div>
+                        <div class="point2"></div>
+                        <div class="point"></div>
+                        <span id="loopInfo"></span> <!-- 新增：用于显示循环信息 -->
+                    </button>
+                </div>
                 <main class="main">
                     <img src=".\封面图.png" alt="" id="imageElement">
                     <span id="speedInfo"></span> <!-- 新增：用于显示倍速信息 -->
                 </main>
-
 
             </div>
 
@@ -769,6 +788,17 @@
             // 更新倍速信息的显示，当倍速为1x时不显示
             document.getElementById('speedInfo').textContent = audio.playbackRate === 1.00 ? "" : audio.playbackRate.toFixed(2) + "x";
         });
+        audio.addEventListener("play", function () {
+            document.getElementById('buttonWrapper').classList.add("rotate-button");
+            // 其他代码...
+        });
+
+        audio.addEventListener("pause", function () {
+            document.getElementById('buttonWrapper').classList.remove("rotate-button");
+            // 其他代码...
+        });
+
+
     </script>
 
 </head>
