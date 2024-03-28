@@ -343,12 +343,12 @@
 
             float: right;
             padding: 5px;
-            margin: 3px 0 0 -50px;
-            border-radius: 30px;
+            margin: 3px 0 0 -10px;
+            border-radius: 5px;
             transition: all 0.2s linear 0s;
             backdrop-filter: blur(4px);
-
-            background-color: #000000c4;
+            transform: translate(80px, 0);
+            background-color: #00000045;
         }
 
         ul.breadcrumb li a {
@@ -362,10 +362,10 @@
             color: #ffffff;
             font-family: "优设标题黑";
             font-size: 15px;
-            background-color: #52525226;
+            background-color: #4e2c2c00;
             text-align: center;
             line-height: 50px;
-            border-radius: 30px;
+            border-radius: 5px;
             transition: all 0.2s linear 0s;
             box-sizing: border-box;
         }
@@ -377,7 +377,7 @@
         }
 
         ul.breadcrumb li a:hover {
-            width: 220px;
+            width: 210px;
             background-color: #00000094;
         }
 
@@ -389,7 +389,7 @@
         /*处理第一个导航项*/
         ul.breadcrumb li:last-child a {
             padding: 0;
-            
+
 
         }
 
@@ -401,12 +401,13 @@
 
         ul.breadcrumb li:last-child:hover a {
             width: 250px;
-            height: 220px;
+            height: 270px;
             line-height: 20px;
 
         }
+
         .breadcrumb li:nth-child(2) a:hover {
-            width: 250px;
+            width: 220px;
             height: 120px;
             /* 样式 */
         }
@@ -448,7 +449,7 @@
             display: block;
         }
 
-     
+
 
         #controls button {
             font-size: 15px;
@@ -470,12 +471,13 @@
             /* 水平居中 */
             z-index: 10;
             /* 元素堆叠顺序层级置顶 */
-            transform: translate(-50%, -50%)rotate(-90deg);
+            transform: translate(-20px, -23.55px)rotate(270deg)scale(0.9);
             /* 偏移旋转以确保准确方向位置居中 */
             color: white;
             /* 文字颜色 */
-            font-size: 12px;
+            font-size: 10px;
             /* 文字大小 */
+
         }
 
         #speedInfo {
@@ -488,11 +490,13 @@
             z-index: 2;
             /* 元素堆叠顺序层级置顶 */
             transform: translate(0, -50%);
+            font-family: "优设标题黑";
             /* 偏移以确保垂直居中 */
             color: white;
             /* 文字颜色 */
             font-size: 12px;
             /* 文字大小 */
+
             margin-left: 10px;
             /* 在文字和图片之间添加一些间距 */
         }
@@ -656,7 +660,7 @@
             transition: all 0.2s linear 0s;
             width: 60px;
             height: 60px;
-            border-radius: 8px;
+            border-radius: 48px;
 
         }
 
@@ -681,7 +685,11 @@
             position: relative;
         }
     </style>
-
+    <style>
+        .BT {
+            transform: translate(0%, -20px);
+        }
+    </style>
 
     <div id="topControls">
 
@@ -694,13 +702,17 @@
         <ul class="breadcrumb">
 
             <div class="wrapper">
+
+
                 <div id="buttonWrapper"> <!-- 新增包裹元素 -->
+
                     <button id="changeLiStyleButton">
+                        <span id="loopInfo"></span> <!-- 新增：用于显示循环信息 -->
                         <div class="point4"></div>
                         <div class="point3"></div>
                         <div class="point2"></div>
                         <div class="point"></div>
-                        <span id="loopInfo"></span> <!-- 新增：用于显示循环信息 -->
+
                     </button>
                 </div>
                 <main class="main">
@@ -735,17 +747,20 @@
                         <button id="audioInputLabel"
                             onclick="document.getElementById('audioInput').click()">选择音频文件</button>
                         <input type="file" id="audioInput" accept="audio/*" style="display: none;"
-                            onchange="updateFileName(this, 'audioFileName'); document.getElementById('audioInputLabel').style.display = 'none';">
+                            onchange="updateFileName(this, 'audioFileName'); document.getElementById('audioInputLabel').style.display = 'none'; document.getElementById('audioChangeButton').style.display = 'inline-block';">
                         <span id="audioFileName" class="file-name"></span>
+                        <button id="audioChangeButton" style="display: none; padding: 2px 5px; font-size: 12px;"
+                            onclick="document.getElementById('audioInput').click();" class="BT">更换</button>
 
                         <button id="srtInputLabel"
                             onclick="document.getElementById('srtInput').click()">选择SRT文件</button>
                         <input type="file" id="srtInput" accept=".srt" style="display: none;"
-                            onchange="updateFileName(this, 'srtFileName'); document.getElementById('srtInputLabel').style.display = 'none';">
+                            onchange="updateFileName(this, 'srtFileName'); document.getElementById('srtInputLabel').style.display = 'none'; document.getElementById('srtChangeButton').style.display = 'inline-block';">
                         <span id="srtFileName" class="file-name"></span>
-
-
+                        <button id="srtChangeButton" style="display: none; padding: 2px 5px; font-size: 12px;"
+                            onclick="document.getElementById('srtInput').click();" class="BT">更换</button>
                     </a>
+
                 </li>
 
                 <li>
@@ -755,7 +770,7 @@
                         <span class="text icon-code">
                             <span class="text icon-file">
                                 <span class="title">
-                                    <kbd class="kbd">← →</kbd>-------------------上/下句
+                                    <kbd class="kbd">← →</kbd>-----------------上/下句
                                 </span><br>
                                 <span class="title">
                                     <kbd class="kbd">Ctrl+F</kbd>----------------搜索定位
@@ -764,17 +779,27 @@
                                     <kbd class="kbd">Ctrl+Z</kbd>-----------清除文字高亮
                                 </span><br>
                                 <span class="title">
-                                    <kbd class="kbd">AD/WS键</kbd>--------退进0.5/5秒
+                                    <kbd class="kbd">AD/WS键</kbd>-----------退进0.5/5秒
                                 </span><br>
                                 <span class="title">
-                                    <kbd class="kbd">空格&点唱片</kbd>-------播放/暂停
+                                    <kbd class="kbd">空格&点唱片</kbd>----------播放/暂停
                                 </span><br>
                                 <span class="title">
-                                    <kbd class="kbd">1~6数字键</kbd>---调整倍速(3为原速)
+                                    <kbd class="kbd">1~6数字键</kbd>------调整倍速(3为原速)
                                 </span><br>
                                 <span class="title">
                                     <kbd class="kbd">Q/E键</kbd>---单、双、三句/全文循环切换
                                 </span><br>
+                                <span class="title">
+                                    <kbd class="kbd">Z键</kbd>------------控制导航栏的显隐
+                                </span><br>
+                                <span class="title">
+                                    <kbd class="kbd">F键</kbd>---------控制黑胶唱片的显隐
+                                </span><br>
+                                <span class="title">
+                                    <kbd class="kbd">X/C键</kbd>-----控制音频/SRT文件的选择
+                                </span><br>
+
 
                             </span></span>
 
@@ -788,12 +813,27 @@
 
 
     </div>
+    <style>
+        .breadcrumb {
+            transition: transform 1.9s ease, opacity 0.9s ease;
+        }
+
+        .breadcrumb.hidden {
+            transform: scale(0.6) translateX(-20%);
+            opacity: 0;
+            pointer-events: none;
+            /* 确保隐藏时不可点击 */
+        }
+    </style>
+
     <script>
         var audio = document.getElementById("audioPlayer");
         var image = document.getElementById("imageElement");
+        var breadcrumb = document.querySelector('.breadcrumb'); // 获取导航栏元素
         var currentRotation = 0; // 跟踪当前旋转角度
         var rotateInterval; // 用于存储旋转间隔的变量
         var clickTimer; // 用于存储点击计时器的变量
+        var isBreadcrumbVisible = true; // 跟踪导航栏的可见性
 
         image.addEventListener("mousedown", function () {
             // 在鼠标按下时开始计时
@@ -843,13 +883,38 @@
         audio.addEventListener("pause", function () {
             document.getElementById('buttonWrapper').classList.remove("rotate-button");
         });
+        // 监听键盘事件
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "f" || event.key === "F") {
+                // 切换导航栏的可见性和样式
+                if (isBreadcrumbVisible) {
+                    breadcrumb.classList.add('hidden');
+                } else {
+                    breadcrumb.classList.remove('hidden');
+                }
+                isBreadcrumbVisible = !isBreadcrumbVisible; // 更新可见性状态
+            }
+        });
+
+
+
     </script>
 
 </head>
 <script>
     var isHidden = false;
 
-    document.getElementById('changeLiStyleButton').addEventListener('click', function () {
+    document.getElementById('changeLiStyleButton').addEventListener('click', toggleLiElements);
+
+    // 监听键盘事件
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "z" || event.key === "Z") {
+            toggleLiElements(); // 调用切换函数
+        }
+    });
+
+    // 定义切换函数
+    function toggleLiElements() {
         var liElements = document.querySelectorAll('.breadcrumb li');
 
         if (!isHidden) {
@@ -867,13 +932,14 @@
             Array.from(liElements).reverse().forEach(function (li, index) {
                 li.style.display = 'block';
                 setTimeout(function () {
-                    li.style.transform = 'scale(1)';
+                    li.style.transform = 'scale(1) translate(30%, 0%)';
                     li.style.opacity = '1';
                 }, 10 + index * 100); // 逐个元素增加延迟，创建连续动画效果
             });
             isHidden = false;
         }
-    });
+    }
+
 </script>
 <script>
     var audio = document.getElementById("audioPlayer");
@@ -922,9 +988,9 @@
     var breadcrumb = document.querySelector('.breadcrumb');
     var isDragging = false;
     var startX, startY, initialX, initialY;
+    var dragTimeout;
 
     breadcrumb.addEventListener('mousedown', function (e) {
-        isDragging = true;
         startX = e.clientX;
         startY = e.clientY;
         var transform = window.getComputedStyle(breadcrumb).transform;
@@ -936,7 +1002,13 @@
             initialX = 0;
             initialY = 0;
         }
-        breadcrumb.classList.add('dragging');
+
+        // 设置一个1秒的延时，1秒后开始拖拽
+        dragTimeout = setTimeout(function () {
+            isDragging = true;
+            breadcrumb.classList.add('dragging');
+        }, 100);
+
         e.preventDefault();
     });
 
@@ -951,11 +1023,13 @@
     });
 
     document.addEventListener('mouseup', function () {
+        clearTimeout(dragTimeout); // 清除延时
         if (isDragging) {
             isDragging = false;
             breadcrumb.classList.remove('dragging');
         }
     });
+
 </script>
 
 
@@ -1025,6 +1099,17 @@
             };
             reader.readAsText(file);
         });
+        // 监听键盘事件
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "x" || event.key === "X") {
+                // 触发音频文件输入的点击事件
+                document.getElementById('audioInput').click();
+            } else if (event.key === "c" || event.key === "C") {
+                // 触发SRT文件输入的点击事件
+                document.getElementById('srtInput').click();
+            }
+        });
+
 
         function updateFileName(inputElement, fileNameElementId) {
             var fileName = inputElement.files[0].name;
