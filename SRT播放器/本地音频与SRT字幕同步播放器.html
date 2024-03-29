@@ -81,7 +81,7 @@
             background-color: rgba(255, 255, 255, 0);
             /* 半透明背景 */
             color: #ffffff;
-            font-family: "优设标题黑";
+            font-family: "Segoe Print";
             /* 白色文字，确保在深色背景上的可读性 */
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(10, 10, 10, 0);
@@ -470,14 +470,16 @@
             left: 79%;
             /* 水平居中 */
             z-index: 10;
+            font-family: "宋体";
             /* 元素堆叠顺序层级置顶 */
-            transform: translate(-20px, -23.55px)rotate(270deg)scale(0.9);
+            transform: translate(-25px, -20px)rotate(269deg)scale(1.1);
             /* 偏移旋转以确保准确方向位置居中 */
             color: white;
             /* 文字颜色 */
-            font-size: 10px;
+            font-size: 12px;
             /* 文字大小 */
-
+            font-weight: 900;
+            /* 文字加粗 */
         }
 
         #speedInfo {
@@ -485,11 +487,11 @@
             /* 绝对定位 */
             top: 165%;
             /* 放在图片下面 */
-            left: 3%;
+            left: 2%;
             /* 水平放置在图片中间 */
             z-index: 2;
             /* 元素堆叠顺序层级置顶 */
-            transform: translate(0, -50%);
+            transform: translate(0, -50%)scale(1.2);
             font-family: "优设标题黑";
             /* 偏移以确保垂直居中 */
             color: white;
@@ -791,15 +793,14 @@
                                     <kbd class="kbd">Q/E键</kbd>---单、双、三句/全文循环切换
                                 </span><br>
                                 <span class="title">
-                                    <kbd class="kbd">Z键</kbd>------------控制导航栏的显隐
+                                    <kbd class="kbd">X/C键</kbd>-----控制音频/SRT文件的选择
+                                </span><br>
+                                <span class="title">
+                                    <kbd class="kbd">R键</kbd>------------控制导航栏的显隐
                                 </span><br>
                                 <span class="title">
                                     <kbd class="kbd">F键</kbd>---------控制黑胶唱片的显隐
                                 </span><br>
-                                <span class="title">
-                                    <kbd class="kbd">X/C键</kbd>-----控制音频/SRT文件的选择
-                                </span><br>
-
 
                             </span></span>
 
@@ -908,7 +909,7 @@
 
     // 监听键盘事件
     document.addEventListener("keydown", function (event) {
-        if (event.key === "z" || event.key === "Z") {
+        if (event.key === "r" || event.key === "R") {
             toggleLiElements(); // 调用切换函数
         }
     });
