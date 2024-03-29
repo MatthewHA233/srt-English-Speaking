@@ -116,6 +116,8 @@
             position: relative;
             z-index: 1;
             /* 确保在背景之上 */
+            transition: all 0.3s ease;
+            /* 添加 CSS 过渡效果可以让高亮的变化看起来更平滑 */
         }
 
         #textContent p:hover {
@@ -1169,12 +1171,12 @@
 
         let lastLoopTime = 0; // 用于记录上一次循环跳转的时间，避免过于频繁的重置
 
-        // 在<script>标签内部，更新以下部分：
-
         let allowLoopReset = true; // 新增变量，用于控制是否允许执行循环重置
 
-        document.getElementById('audioPlayer').addEventListener('timeupdate', function () {
-            const player = this;
+        let rafId;
+
+        function updateProgress() {
+            const player = document.getElementById('audioPlayer');
             const currentTime = player.currentTime;
 
             // 找到当前时间所在的时间段
@@ -1210,7 +1212,19 @@
                 player.currentTime = loopStart;
                 player.play();
             }
+
+            rafId = requestAnimationFrame(updateProgress);
+        }
+
+        document.getElementById('audioPlayer').addEventListener('play', function () {
+            rafId = requestAnimationFrame(updateProgress);
         });
+
+        document.getElementById('audioPlayer').addEventListener('pause', function () {
+            cancelAnimationFrame(rafId);
+        });
+
+
 
         // 循环模式的状态：0=关闭，1=单句，2=双句，3=三句
         let loopMode = 0;
