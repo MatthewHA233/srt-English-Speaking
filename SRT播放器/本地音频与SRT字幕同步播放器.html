@@ -300,7 +300,6 @@
 
             font-family: "优设标题黑";
 
-
         }
 
 
@@ -370,6 +369,7 @@
             border-radius: 5px;
             transition: all 0.2s linear 0s;
             box-sizing: border-box;
+
         }
 
         /*控制每个导航项中文本的出现*/
@@ -381,6 +381,7 @@
         ul.breadcrumb li a:hover {
             width: 210px;
             background-color: #00000094;
+
         }
 
         ul.breadcrumb li a:hover .text {
@@ -474,7 +475,7 @@
             z-index: 10;
             font-family: "宋体";
             /* 元素堆叠顺序层级置顶 */
-            transform: translate(-25px, -20px)rotate(269deg)scale(1.1);
+            transform: translate(-26px, -19px)rotate(269deg)scale(0.80);
             /* 偏移旋转以确保准确方向位置居中 */
             color: white;
             /* 文字颜色 */
@@ -551,6 +552,8 @@
             /* 设置一个较低的 z-index 值 */
         }
 
+
+
         .main img {
             position: relative;
             left: -260px;
@@ -565,6 +568,7 @@
             /* 设置层级为 1 */
 
         }
+
 
         /* 按钮样式 */
         #changeLiStyleButton {
@@ -703,6 +707,7 @@
 
 
 
+
         <ul class="breadcrumb">
 
             <div class="wrapper">
@@ -720,6 +725,8 @@
                     </button>
                 </div>
                 <main class="main">
+
+
                     <img src=".\封面图.png" alt="" id="imageElement">
                     <span id="speedInfo"></span> <!-- 新增：用于显示倍速信息 -->
                 </main>
@@ -774,10 +781,10 @@
                         <span class="text icon-code">
                             <span class="text icon-file">
                                 <span class="title">
-                                    <kbd class="kbd">← →</kbd>-----------------上/下句
+                                    <kbd class="kbd">← →</kbd>----------------上/下句
                                 </span><br>
                                 <span class="title">
-                                    <kbd class="kbd">Ctrl+F</kbd>----------------搜索定位
+                                    <kbd class="kbd">Ctrl+F</kbd>--------------搜索定位
                                 </span><br>
                                 <span class="title">
                                     <kbd class="kbd">Ctrl+Z</kbd>-----------清除文字高亮
@@ -789,16 +796,16 @@
                                     <kbd class="kbd">空格&点唱片</kbd>----------播放/暂停
                                 </span><br>
                                 <span class="title">
-                                    <kbd class="kbd">1~6数字键</kbd>------调整倍速(3为原速)
+                                    <kbd class="kbd">1~6数字键</kbd>----调整倍速(3为原速)
                                 </span><br>
                                 <span class="title">
-                                    <kbd class="kbd">Q/E键</kbd>---单、双、三句/全文循环切换
+                                    <kbd class="kbd">Q/E键</kbd>--单、双、三句/全文循环切换
                                 </span><br>
                                 <span class="title">
-                                    <kbd class="kbd">X/C键</kbd>-----控制音频/SRT文件的选择
+                                    <kbd class="kbd">X/C键</kbd>----控制音频/SRT文件的选择
                                 </span><br>
                                 <span class="title">
-                                    <kbd class="kbd">R键</kbd>------------控制导航栏的显隐
+                                    <kbd class="kbd">Z键</kbd>-----------控制导航栏的显隐
                                 </span><br>
                                 <span class="title">
                                     <kbd class="kbd">F键</kbd>---------控制黑胶唱片的显隐
@@ -828,7 +835,152 @@
             /* 确保隐藏时不可点击 */
         }
     </style>
+    <script>
+        function playInteractionSound(soundFile) {
+            var audio = new Audio(soundFile);
+            audio.play();
+        }
 
+        document.querySelectorAll('ul.breadcrumb li a').forEach(function (link) {
+            link.addEventListener('click', function (event) {
+                playInteractionSound('4.wav');
+
+                // 其他逻辑...
+            });
+        });
+
+        document.querySelectorAll(' .main').forEach(function (link) {
+            link.addEventListener('click', function (event) {
+                playInteractionSound('4.wav');
+
+                // 其他逻辑...
+            });
+        });
+
+        document.querySelectorAll('   #changeLiStyleButton').forEach(function (link) {
+            link.addEventListener('click', function (event) {
+                playInteractionSound('4.wav');
+
+                // 其他逻辑...
+            });
+        });
+        /*1.flac 2.flac 3.wav 4.wav 5.mp3 6.wav 7.wav 8.wav
+         playInteractionSound('1.flac');
+          playInteractionSound('2.flac');
+            playInteractionSound('3.wav');
+              playInteractionSound('4.wav');
+                playInteractionSound('5.mp3');
+                  playInteractionSound('6.wav');
+                    playInteractionSound('7.wav');
+                    playInteractionSound('8.wav');*/
+        document.addEventListener('keydown', function (event) {
+            switch (event.key) {
+                case 'ArrowLeft':
+                    console.log('左箭头按下');
+
+                case 'ArrowRight':
+                    console.log('右箭头按下');
+                    playInteractionSound('6.wav');
+                    break;
+                case ' ':
+                    console.log('空格键按下');
+                    playInteractionSound('4.wav');
+                    break;
+                case 'F':
+                case 'f':
+
+                    console.log('F键按下');
+                    playInteractionSound('4.wav');
+                    break;
+                case 'Q':
+                case 'q':
+                    console.log('Q键按下');
+
+
+                case 'E':
+                case 'e':
+                    console.log('E键按下');
+                    playInteractionSound('5.mp3');
+                    break;
+
+                case 'A':
+                case 'a':
+                    console.log('A键按下');
+
+                case 'D':
+                case 'd':
+                    console.log('D键按下');
+
+                case 'W':
+                case 'w':
+                    console.log('W键按下');
+
+                case 'S':
+                case 's':
+                    console.log('S键按下');
+                    playInteractionSound('6.wav');
+                    break;
+                case 'Z':
+                case 'z':
+                    console.log('R键按下');
+
+                    playInteractionSound('4.wav');
+                    break;
+
+                case 'X':
+                case 'x':
+                    console.log('X键按下');
+
+                case 'C':
+                case 'c':
+                    console.log('C键按下');
+
+                    break;
+                case 'Z':
+                case 'z':
+                    if (event.ctrlKey) {
+                        console.log('Ctrl + Z组合键按下');
+                        playInteractionSound('4.wav');
+
+                    }
+                    break;
+                case 'F':
+                case 'f':
+                    if (event.ctrlKey) {
+                        console.log('Ctrl + Z组合键按下');
+                        playInteractionSound('4.wav');
+
+                    }
+                    break;
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                    console.log(event.key + '数字键按下');
+                    playInteractionSound('5.mp3');
+                    break;
+                default:
+                    break;
+            }
+        });
+
+
+
+    </script>
+    <script>
+        document.querySelectorAll('ul.breadcrumb li a').forEach(function (link) {
+            link.addEventListener('click', function (event) {
+                // 检查点击的元素是否是文件选择按钮
+                if (!event.target.matches('#audioInput') && !event.target.matches('#srtInput')) {
+                    event.preventDefault();
+                    // 这里可以添加你的其他逻辑
+                }
+            });
+        });
+
+    </script>
     <script>
         var audio = document.getElementById("audioPlayer");
         var image = document.getElementById("imageElement");
@@ -888,7 +1040,12 @@
         });
         // 监听键盘事件
         document.addEventListener("keydown", function (event) {
+
             if (event.key === "f" || event.key === "F") {
+                if (event.ctrlKey) {
+                    // Ctrl + F 组合键被按下，不执行后续操作
+                    return;
+                }
                 // 切换导航栏的可见性和样式
                 if (isBreadcrumbVisible) {
                     breadcrumb.classList.add('hidden');
@@ -911,7 +1068,11 @@
 
     // 监听键盘事件
     document.addEventListener("keydown", function (event) {
-        if (event.key === "r" || event.key === "R") {
+        if (event.ctrlKey) {
+            // Ctrl + F 组合键被按下，不执行后续操作
+            return;
+        }
+        if (event.key === "z" || event.key === "Z") {
             toggleLiElements(); // 调用切换函数
         }
     });
