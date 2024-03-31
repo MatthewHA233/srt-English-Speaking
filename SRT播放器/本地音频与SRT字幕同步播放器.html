@@ -859,12 +859,12 @@
 
         document.querySelectorAll('   #changeLiStyleButton').forEach(function (link) {
             link.addEventListener('click', function (event) {
-                playInteractionSound('4.wav');
+                playInteractionSound('9.mp3');
 
                 // 其他逻辑...
             });
         });
-        /*1.flac 2.flac 3.wav 4.wav 5.mp3 6.wav 7.wav 8.wav
+        /*1.flac 2.flac 3.wav 4.wav 5.mp3 6.wav 7.wav 8.wav 
          playInteractionSound('1.flac');
           playInteractionSound('2.flac');
             playInteractionSound('3.wav');
@@ -886,12 +886,7 @@
                     console.log('空格键按下');
                     playInteractionSound('4.wav');
                     break;
-                case 'F':
-                case 'f':
-
-                    console.log('F键按下');
-                    playInteractionSound('4.wav');
-                    break;
+             
                 case 'Q':
                 case 'q':
                     console.log('Q键按下');
@@ -920,13 +915,7 @@
                     console.log('S键按下');
                     playInteractionSound('6.wav');
                     break;
-                case 'Z':
-                case 'z':
-                    console.log('R键按下');
-
-                    playInteractionSound('4.wav');
-                    break;
-
+             
                 case 'X':
                 case 'x':
                     console.log('X键按下');
@@ -934,24 +923,32 @@
                 case 'C':
                 case 'c':
                     console.log('C键按下');
-
+                    playInteractionSound('2.flac');
                     break;
                 case 'Z':
                 case 'z':
                     if (event.ctrlKey) {
                         console.log('Ctrl + Z组合键按下');
                         playInteractionSound('4.wav');
-
+                        break;
                     }
-                    break;
+                    else{
+                        playInteractionSound('9.mp3');
+                        break;
+                    }
+                   
                 case 'F':
                 case 'f':
                     if (event.ctrlKey) {
                         console.log('Ctrl + Z组合键按下');
                         playInteractionSound('4.wav');
-
+                        break;
                     }
-                    break;
+                    else{
+                        playInteractionSound('9.mp3');
+                        break;
+                    }
+            
                 case '1':
                 case '2':
                 case '3':
