@@ -304,15 +304,15 @@
 
 
 
-
+        /* 这段 CSS 代码是对面包屑导航栏中的最后一个导航项
+        （即第一个导航项，因为导航项是从右向左排列的）
+        在鼠标悬停时的某个子元素 .h 的样式进行设置： */
         ul.breadcrumb li:last-child:hover a .h {
-
-            color: #69eacebb;
-            padding: 14px 0;
-            font-size: 22.5px;
-            transform: translate(0%, 0%);
-            transition: transform 0.5s ease;
-
+            color: #69eacebb; /* 设置文本颜色 */
+            padding: 14px 0; /* 设置上下内边距为14px，左右内边距为0 */
+            font-size: 22.5px; /* 设置字体大小 */
+            transform: translate(0%, 0%); /* 设置变换，这里实际上没有进行任何位移 */
+            transition: transform 0.5s ease; /* 设置变换的过渡效果，持续时间0.5秒，缓动函数为ease */
         }
 
         .title {
@@ -324,135 +324,131 @@
 
         }
 
+        /* 设置面包屑导航的基本样式 */
         ul.breadcrumb {
-
-            position: fixed;
-            top: 0;
-            /* 设置顶部对齐 */
-            left: 0;
-            /* 设置左侧对齐 */
-            display: inline-block;
-            margin-left: -65px;
-            margin-top: -319px;
-            z-index: 2;
-            height: 50px;
-
+            position: fixed; /* 固定位置 */
+            top: 0; /* 顶部对齐 */
+            left: 0; /* 左侧对齐 */
+            display: inline-block; /* 行内块显示 */
+            margin-left: -65px; /* 左外边距 */
+            margin-top: -319px; /* 上外边距 */
+            z-index: 2; /* 层级 */
+            height: 50px; /* 高度 */
         }
 
-        /*实现每个导航项的基本样式*/
+        /* 设置每个导航项的基本样式 */
         ul.breadcrumb li {
-
-            float: right;
-            padding: 5px;
-            margin: 3px 0 0 -10px;
-            border-radius: 5px;
-            transition: all 0.2s linear 0s;
-            backdrop-filter: blur(4px);
-            transform: translate(80px, 0);
-            background-color: #00000045;
+            float: right; /* 向右浮动 */
+            padding: 5px; /* 内边距 */
+            margin: 3px 0 0 -10px; /* 外边距 */
+            border-radius: 5px; /* 圆角 */
+            transition: all 0.2s linear 0s; /* 过渡效果 */
+            backdrop-filter: blur(4px); /* 背景模糊滤镜 */
+            transform: translate(80px, 0); /* 变换 */
+            background-color: #00000045; /* 背景颜色 */
         }
 
+        /* 设置导航链接的基本样式 */
         ul.breadcrumb li a {
-
-            display: block;
-            overflow: hidden;
-            min-width: 50px;
-            width: 210px;
-            height: 50px;
-            padding: 0 33.33px 0 52px;
-            color: #ffffff;
-            font-family: "优设标题黑";
-            font-size: 15px;
-            background-color: #4e2c2c00;
-            text-align: center;
-            line-height: 50px;
-            border-radius: 5px;
-            transition: all 0.2s linear 0s;
-            box-sizing: border-box;
-
+            display: block; /* 块级显示 */
+            overflow: hidden; /* 溢出隐藏 */
+            min-width: 50px; /* 最小宽度 */
+            width: 210px; /* 宽度 */
+            height: 50px; /* 高度 */
+            padding: 0 33.33px 0 52px; /* 内边距 */
+            color: #ffffff; /* 文本颜色 */
+            font-family: "优设标题黑"; /* 字体 */
+            font-size: 15px; /* 字号 */
+            background-color: #4e2c2c00; /* 背景颜色 */
+            text-align: center; /* 文本居中对齐 */
+            line-height: 50px; /* 行高 */
+            border-radius: 5px; /* 圆角 */
+            transition: all 0.2s linear 0s; /* 过渡效果 */
+            box-sizing: border-box; /* 盒模型 */
         }
 
-        /*控制每个导航项中文本的出现*/
+        /* 控制导航项中文本的显示和隐藏 */
         ul.breadcrumb li a .text {
-            display: none;
-            opacity: 0;
+            display: none; /* 默认不显示 */
+            opacity: 0; /* 透明度 */
         }
 
+        /* 鼠标悬停时改变导航链接的样式 */
         ul.breadcrumb li a:hover {
-            width: 210px;
-            background-color: #00000094;
-
+            width: 210px; /* 宽度 */
+            background-color: #00000094; /* 背景颜色 */
         }
 
+        /* 鼠标悬停时显示导航项中的文本 */
         ul.breadcrumb li a:hover .text {
-            display: inline-block;
-            opacity: 1;
+            display: inline-block; /* 显示 */
+            opacity: 1; /* 不透明 */
         }
 
         /*处理第一个导航项*/
         ul.breadcrumb li:last-child a {
             padding: 0;
-
-
         }
 
+        /* 鼠标悬停在第一个导航项时的样式 */
         ul.breadcrumb li:last-child:hover {
-            padding: 3px;
-            margin-top: 0;
-
+            padding: 3px; /* 内边距 */
+            margin-top: 0; /* 上外边距 */
         }
 
+        /* 鼠标悬停在第一个导航项的链接时的样式 */
         ul.breadcrumb li:last-child:hover a {
-            width: 250px;
-            height: 270px;
-            line-height: 20px;
-
-        }
-
-        .breadcrumb li:nth-child(2) a:hover {
-            width: 220px;
-            height: 120px;
-            /* 样式 */
+            width: 250px; /* 宽度 */
+            height: 270px; /* 高度 */
+            line-height: 20px; /* 行高 */
         }
 
 
+        /* 第二个导航项鼠标悬停时的样式 */
+        ul.breadcrumb li:nth-child(2) a:hover {
+            width: 320px; /* 宽度增长 */
+            height: 120px; /* 高度 */
+            /* 其他样式 */
+        }
+
+        
+        /* 设置 .kbd 类的基本样式 */
         .kbd {
-
-            font-size: 15px;
-            color: rgb(255, 255, 255);
-            font-family: "优设标题黑";
+            font-size: 15px; /* 字体大小 */
+            color: rgb(255, 255, 255); /* 文本颜色，白色 */
+            font-family: "优设标题黑"; /* 字体 */
         }
 
+        /* 定义一个名为 scaleAnimation 的关键帧动画 */
         @keyframes scaleAnimation {
             0% {
-                transform: scale(1);
+                transform: scale(1); /* 动画开始时，元素的缩放比例为1（原始大小） */
             }
 
             100% {
-                transform: scale(1.5);
+                transform: scale(1.5); /* 动画结束时，元素的缩放比例为1.5（放大50%） */
             }
         }
 
+        /* 设置面包屑导航栏中第一个导航项的链接的宽度 */
         ul.breadcrumb li:first-child a {
-            width: 225px;
-
+            width: 225px; /* 宽度 */
         }
 
+        /* 设置面包屑导航栏中第一个导航项的链接在鼠标悬停时的宽度和高度 */
         ul.breadcrumb li:first-child a:hover {
-            width: 230px;
-            height: 150px;
-
+            width: 230px; /* 宽度 */
+            height: 150px; /* 高度 */
         }
 
+        /* 设置 .sct 类的基本样式 */
         .sct {
-            padding: 0px 0;
-            color: #e0f3fae7;
-            font-size: 15px;
-            font-family: "优设标题黑";
-            display: block;
+            padding: 0px 0; /* 上下内边距为0 */
+            color: #e0f3fae7; /* 文本颜色 */
+            font-size: 15px; /* 字体大小 */
+            font-family: "优设标题黑"; /* 字体 */
+            display: block; /* 块级显示 */
         }
-
-
 
         #controls button {
             font-size: 15px;
