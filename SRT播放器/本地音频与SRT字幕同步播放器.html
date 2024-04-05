@@ -843,7 +843,7 @@
 
         document.querySelectorAll('ul.breadcrumb li a').forEach(function (link) {
             link.addEventListener('click', function (event) {
-                playInteractionSound('4.wav');
+                playInteractionSound('浏览_科幻哔声.wav');
 
                 // 其他逻辑...
             });
@@ -851,7 +851,7 @@
 
         document.querySelectorAll(' .main').forEach(function (link) {
             link.addEventListener('click', function (event) {
-                playInteractionSound('4.wav');
+                playInteractionSound('浏览_机械科幻点击.wav');
 
                 // 其他逻辑...
             });
@@ -864,6 +864,7 @@
                 // 其他逻辑...
             });
         });
+
         /*1.flac 2.flac 3.wav 4.wav 5.mp3 6.wav 7.wav 8.wav
          playInteractionSound('1.flac');
           playInteractionSound('2.flac');
@@ -877,25 +878,31 @@
             switch (event.key) {
                 case 'ArrowLeft':
                     console.log('左箭头按下');
-
+                    playInteractionSound('6.wav');
+                    break;
                 case 'ArrowRight':
                     console.log('右箭头按下');
                     playInteractionSound('6.wav');
                     break;
                 case ' ':
                     console.log('空格键按下');
-                    playInteractionSound('4.wav');
+                    playInteractionSound('浏览_机械科幻点击 (2).wav');
                     break;
                 case 'F':
                 case 'f':
-
-                    console.log('F键按下');
-                    playInteractionSound('4.wav');
+                    if (event.ctrlKey) {
+                        console.log('Ctrl + f组合键按下');
+                        playInteractionSound('选择_薄复杂音调.wav');
+                    } else {
+                        console.log('f键按下');
+                        playInteractionSound('暂停_界面屏幕.wav');
+                    }
                     break;
                 case 'Q':
                 case 'q':
                     console.log('Q键按下');
-
+                    playInteractionSound('5.mp3');
+                    break; // 添加 break
 
                 case 'E':
                 case 'e':
@@ -906,14 +913,20 @@
                 case 'A':
                 case 'a':
                     console.log('A键按下');
+                    playInteractionSound('6.wav');
+                    break; 
 
                 case 'D':
                 case 'd':
                     console.log('D键按下');
+                    playInteractionSound('6.wav');
+                    break; 
 
                 case 'W':
                 case 'w':
                     console.log('W键按下');
+                    playInteractionSound('6.wav');
+                    break; 
 
                 case 'S':
                 case 's':
@@ -922,49 +935,50 @@
                     break;
                 case 'Z':
                 case 'z':
-                    console.log('R键按下');
-
-                    playInteractionSound('4.wav');
+                    if (event.ctrlKey) {
+                        console.log('Ctrl + Z组合键按下');
+                        playInteractionSound('拒绝_薄简单未来派音调.wav');
+                    } else {
+                        console.log('Z键按下');
+                        playInteractionSound('机械按钮_轻弹簧砰声.wav');
+                    }
                     break;
-
                 case 'X':
                 case 'x':
                     console.log('X键按下');
+                    break; // 添加 break
 
                 case 'C':
                 case 'c':
                     console.log('C键按下');
+                    break; // 添加 break
 
-                    break;
-                case 'Z':
-                case 'z':
-                    if (event.ctrlKey) {
-                        console.log('Ctrl + Z组合键按下');
-                        playInteractionSound('4.wav');
-
-                    }
-                    break;
-                case 'F':
-                case 'f':
-                    if (event.ctrlKey) {
-                        console.log('Ctrl + Z组合键按下');
-                        playInteractionSound('4.wav');
-
-                    }
-                    break;
                 case '1':
                 case '2':
+                    console.log(event.key + '数字键1、2按下');
+                    playInteractionSound('浏览_科幻哔声_速1.wav');
+                    break;
+
                 case '3':
+                    console.log(event.key + '数字键3按下');
+                    playInteractionSound('浏览_科幻哔声_速2.wav');
+                    break;
+
                 case '4':
                 case '5':
+                    console.log(event.key + '数字键4、5按下');
+                    playInteractionSound('浏览_科幻哔声_速3.wav');
+                    break;
+                        
                 case '6':
-                    console.log(event.key + '数字键按下');
-                    playInteractionSound('5.mp3');
+                    console.log(event.key + '数字键4、5按下');
+                    playInteractionSound('浏览_科幻哔声_速4.wav');
                     break;
                 default:
                     break;
             }
         });
+
 
 
 
